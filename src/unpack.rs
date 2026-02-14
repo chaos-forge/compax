@@ -1,12 +1,12 @@
+use bzip2::read::BzDecoder;
+use flate2::read::GzDecoder;
+use liblzma::read::XzDecoder;
+use sevenz_rust::decompress_file;
+use std::error::Error;
 use std::fs::File;
 use std::path::Path;
-use flate2::read::GzDecoder;
-use xz2::read::XzDecoder;
-use zstd::stream::Decoder;
-use bzip2::read::BzDecoder;
 use tar::Archive;
-use std::error::Error;
-use sevenz_rust::decompress_file;
+use zstd::stream::Decoder;
 
 #[derive(Debug, Clone, Copy)]
 pub enum DeCompressionFormat {
@@ -80,7 +80,8 @@ fn sevenz_decompress(input: &str, output: &str) -> Result<(), Box<dyn Error>> {
 /// Automatically detect compression format and decompress
 pub fn decompress_any(input: &str, output: &str) -> Result<(), Box<dyn Error>> {
     let path = Path::new(input);
-    let extension = path.extension()
+    let extension = path
+        .extension()
         .and_then(|ext| ext.to_str())
         .ok_or("Unable to determine file extension")?;
 

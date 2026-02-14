@@ -1,14 +1,14 @@
+use bzip2::Compression as BzCompression;
+use bzip2::write::BzEncoder;
+use flate2::Compression as GzCompression;
+use flate2::write::GzEncoder;
+use liblzma::write::XzEncoder;
+use sevenz_rust::SevenZWriter;
+use std::error::Error;
 use std::fs::File;
 use std::path::Path;
-use std::error::Error;
 use tar::Builder;
 use zstd::stream::Encoder;
-use xz2::write::XzEncoder;
-use flate2::write::GzEncoder;
-use flate2::Compression as GzCompression;
-use bzip2::write::BzEncoder;
-use bzip2::Compression as BzCompression;
-use sevenz_rust::SevenZWriter;
 
 #[derive(Debug, Clone, Copy)]
 pub enum CompressionFormat {
@@ -100,7 +100,7 @@ fn sevenz_compress(input: &str, output: &str) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-// Public API 
+// Public API
 pub fn xz(input: &str, output: &str) -> Result<(), Box<dyn Error>> {
     CompressionFormat::Xz.compress(input, output)
 }
